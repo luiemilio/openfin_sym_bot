@@ -1,16 +1,15 @@
 {
-  "name": "support_bot",
+  "name": "OpenFin Support Bot",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "OpenFin Support Symphony Bot",
+  "main": "bot.js",
   "scripts": {
+    "start": "node bot.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
-    "node-zendesk": "^1.3.0",
     "symphony-api-client-node": "^0.1.0"
   }
 }
