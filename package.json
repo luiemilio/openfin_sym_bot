@@ -8,5 +8,9 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "node-zendesk": "^1.3.0",
+    "symphony-api-client-node": "^0.1.0"
+  }
 }
