@@ -14,33 +14,31 @@ let requestCtr = 0;
 const listenToMessages = (event, messages) => {
 	messages.forEach((message, index) => {
 
+		const userEmail = message.user.email;
+
 		const messageText = message.messageText.toLowerCase();
 
 		if (messageText === prompts.create) {
-			requests[message.user.email] = {
-				previousPrompt: prompts.create
-			};
+			requests[userEmail].previousPrompt = prompts.create;
 			Symphony.sendMessage(message.stream.streamId, prompts.subject, null, Symphony.MESSAGEML_FORMAT);
-		} else if (requests[message.user.email] && requests[message.user.email].previousPrompt === prompts.create) {
-			requests[message.user.email].subject = message.messageText;
-			requests[message.user.email].previousPrompt = prompts.subject;
+		} else if (requests[userEmail] && requests[userEmail].previousPrompt === prompts.create) {
+			requests[userEmail].subject = message.messageText;
+			requests[userEmail].previousPrompt = prompts.subject;
 			Symphony.sendMessage(message.stream.streamId, prompts.rvm, null, Symphony.MESSAGEML_FORMAT);
-		} else if (requests[message.user.email] && requests[message.user.email].previousPrompt === prompts.subject) {
-			requests[message.user.email].rvm = message.messageText;
-			requests[message.user.email].previousPrompt = prompts.rvm;
+		} else if (requests[userEmail] && requests[userEmail].previousPrompt === prompts.subject) {
+			requests[userEmail].rvm = message.messageText;
+			requests[userEmail].previousPrompt = prompts.rvm;
 			Symphony.sendMessage(message.stream.streamId, prompts.runtime, null, Symphony.MESSAGEML_FORMAT);
-		} else if (requests[message.user.email] && requests[message.user.email].previousPrompt === prompts.rvm) {
-			requests[message.user.email].runtime = message.messageText;
-			requests[message.user.email].previousPrompt = prompts.runtime;
+		} else if (requests[userEmail] && requests[userEmail].previousPrompt === prompts.rvm) {
+			requests[userEmail].runtime = message.messageText;
+			requests[userEmail].previousPrompt = prompts.runtime;
 			Symphony.sendMessage(message.stream.streamId, prompts.details, null, Symphony.MESSAGEML_FORMAT);
-		} else if (requests[message.user.email] && requests[message.user.email].previousPrompt === prompts.runtime) {
-			requests[message.user.email].details = message.messageText;
-			requests[message.user.email].previousPrompt = prompts.details;
+		} else if (requests[userEmail] && requests[userEmail].previousPrompt === prompts.runtime) {
+			requests[userEmail].details = message.messageText;
+			requests[userEmail].previousPrompt = prompts.details;
 		}
 	});
-}
-
-
+};
 
 Symphony.initBot(__dirname + '/config.json')
 	.then((symAuth) => {
