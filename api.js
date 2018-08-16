@@ -23,7 +23,6 @@ const parseTicket = (answersFromClient) => {
 			},
 			"requester": {
 				"locale_id": 1,
-				"name": answersFromClient.requesterName,
 				"email": answersFromClient.requesterEmail
 			}
 		}

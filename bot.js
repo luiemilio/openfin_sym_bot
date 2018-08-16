@@ -24,7 +24,6 @@ const listenToMessages = (event, messages) => {
 		if (messageText === prompts.create) {
 			requests[userEmail] = {};
 			requests[userEmail].requesterEmail = userEmail;
-			requests[userEmail].requesterName = 'test_name';
 			requests[userEmail].previousPrompt = prompts.create;
 			Symphony.sendMessage(message.stream.streamId, prompts.subject, null, Symphony.MESSAGEML_FORMAT);
 		} else if (requests[userEmail] && requests[userEmail].previousPrompt === prompts.create) {
