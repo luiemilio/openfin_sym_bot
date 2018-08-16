@@ -1,4 +1,8 @@
 const Symphony = require('symphony-api-client-node');
+const {
+	parseTicket,
+	createTicket
+} = require('./api.js');
 
 const prompts = {
 	create: 'create zd ticket',
@@ -9,16 +13,18 @@ const prompts = {
 }
 
 let requests = {};
-let requestCtr = 0;
 
 const listenToMessages = (event, messages) => {
 	messages.forEach((message, index) => {
-
+		console.log(event);
 		const userEmail = message.user.email;
 
 		const messageText = message.messageText.toLowerCase();
 
 		if (messageText === prompts.create) {
+			requests[userEmail] = {};
+			requests[userEmail].requesterEmail = userEmail;
+			requests[userEmail].requesterName = 'test_name';
 			requests[userEmail].previousPrompt = prompts.create;
 			Symphony.sendMessage(message.stream.streamId, prompts.subject, null, Symphony.MESSAGEML_FORMAT);
 		} else if (requests[userEmail] && requests[userEmail].previousPrompt === prompts.create) {
@@ -36,6 +42,10 @@ const listenToMessages = (event, messages) => {
 		} else if (requests[userEmail] && requests[userEmail].previousPrompt === prompts.runtime) {
 			requests[userEmail].details = message.messageText;
 			requests[userEmail].previousPrompt = prompts.details;
+			console.log(parseTicket(requests[userEmail]));
+			createTicket(parseTicket(requests[userEmail]), () => {
+				Symphony.sendMessage(message.stream.streamId, 'Ticket has been created!', null, Symphony.MESSAGEML_FORMAT);
+			});
 		}
 	});
 };
